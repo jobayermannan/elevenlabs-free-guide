@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0E1020" />
+    <title>ElevenLabs Creator ফ্রি — বাংলা গাইড | Makezy</title>
+    <meta
+      name="description"
+      content="Hacktoberfest-এর অফার দিয়ে ElevenLabs Creator প্ল্যান ১ মাস ফ্রি নেওয়ার ধাপে ধাপে বাংলা গাইড। স্ক্রিনশটে মার্ক করা, নিজে নিজেই করতে পারবেন।"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="ElevenLabs Creator ১ মাস ফ্রি — ধাপে ধাপে বাংলা গাইড" />
+    <meta property="og:description" content="Hacktoberfest + MyMLH + GitHub. স্ক্রিনশটে মার্ক করা সহজ গাইড, Makezy থেকে।" />
+    <meta property="og:image" content="assets/step-2-elevenlabs.png" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap"
+    />
+    <style>
+      :root {
+        --ink: #0e1020;
+        --indigo: #262f8f;
+        --purple: #8b3cf6;
+        --cyan: #22e6f7;
+        --text: #dfe3f5;
+        --muted: #9aa3c7;
+        --glass: rgba(255, 255, 255, 0.055);
+        --glass-strong: rgba(255, 255, 255, 0.09);
+        --edge: rgba(255, 255, 255, 0.12);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      body {
+        margin: 0;
+        background: var(--ink);
+        color: var(--text);
+        font-family: "Inter", "Noto Sans Bengali", system-ui, sans-serif;
+        font-size: 17px;
+        line-height: 1.8;
+        overflow-x: hidden;
+      }
+
+      /* Blurred brand lights behind the glass */
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .bg i {
+        position: absolute;
+        display: block;
+        border-radius: 50%;
+        /* Kept moderate: big blur radii are expensive on low-end phones. */
+        filter: blur(64px);
+        opacity: 0.55;
+      }
+      .bg i:nth-child(1) {
+        width: 540px;
+        height: 540px;
+        top: -180px;
+        left: -120px;
+        background: var(--indigo);
+      }
+      .bg i:nth-child(2) {
+        width: 460px;
+        height: 460px;
+        top: 12%;
+        right: -160px;
+        background: var(--purple);
+      }
+      .bg i:nth-child(3) {
+        width: 420px;
+        height: 420px;
+        top: 55%;
+        left: -140px;
+        background: #1b6fb8;
+        opacity: 0.4;
+      }
+      .bg i:nth-child(4) {
+        width: 380px;
+        height: 380px;
+        bottom: -120px;
+        right: -80px;
+        background: var(--cyan);
+        opacity: 0.22;
+      }
+      .bg b {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 46px 46px;
+        mask-image: linear-gradient(to bottom, #000, transparent 90%);
+        -webkit-mask-image: linear-gradient(to bottom, #000, transparent 90%);
+      }
+
+      .wrap {
+        width: min(100% - 32px, 880px);
+        margin-inline: auto;
+      }
+
+      /* ---------- glass ---------- */
+      .glass {
+        background: var(--glass);
+        border: 1px solid var(--edge);
+        border-radius: var(--radius);
+        backdrop-filter: blur(14px) saturate(135%);
+        -webkit-backdrop-filter: blur(14px) saturate(135%);
+        box-shadow: 0 18px 50px -24px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      }
+      /* Glass inside glass is very costly to paint, so nested panels get the
+         frosted look from a flat tint instead of a second backdrop-filter. */
+      .glass .glass {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      /* ---------- header ---------- */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(14, 16, 32, 0.72);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 62px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-weight: 800;
+        color: #fff;
+        text-decoration: none;
+        letter-spacing: -0.01em;
+      }
+      .brand img {
+        height: 26px;
+        width: auto;
+      }
+      .top-link {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--edge);
+        background: var(--glass);
+      }
+      .top-link:hover {
+        background: var(--glass-strong);
+      }
+
+      /* ---------- hero ---------- */
+      .hero {
+        padding: 54px 0 28px;
+        text-align: center;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 7px 16px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #bdf4fb;
+        border: 1px solid rgba(34, 230, 247, 0.3);
+        background: rgba(34, 230, 247, 0.09);
+      }
+      .pill span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--cyan);
+      }
+      h1 {
+        margin: 20px 0 0;
+        font-size: clamp(2rem, 7vw, 3.1rem);
+        line-height: 1.28;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.015em;
+        text-wrap: balance;
+      }
+      .grad {
+        background: linear-gradient(90deg, #a877ff, var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .lede {
+        margin: 18px auto 0;
+        max-width: 640px;
+        color: var(--muted);
+        font-size: 1.06rem;
+      }
+
+      /* ---------- generic blocks ---------- */
+      section {
+        margin-top: 34px;
+      }
+      h2 {
+        font-size: clamp(1.4rem, 4.6vw, 1.9rem);
+        font-weight: 800;
+        color: #fff;
+        margin: 0 0 6px;
+        line-height: 1.35;
+        letter-spacing: -0.01em;
+      }
+      h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        margin: 22px 0 8px;
+      }
+      p {
+        margin: 10px 0;
+      }
+      a {
+        color: #8fe7f5;
+      }
+      .eyebrow {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin: 0;
+      }
+
+      .pad {
+        padding: 24px;
+      }
+      @media (min-width: 640px) {
+        .pad {
+          padding: 30px 34px;
+        }
+      }
+
+      ul,
+      ol {
+        padding-left: 1.25em;
+        margin: 10px 0;
+      }
+      ol {
+        list-style-type: bengali; /* ১. ২. ৩. instead of 1. 2. 3. */
+      }
+      li {
+        margin: 7px 0;
+      }
+      ul.clean {
+        list-style: none;
+        padding: 0;
+      }
+      /* The tick is absolute, not a flex item: inline <code> and <strong>
+         inside the item must keep flowing with the text, not become
+         flex items that squeeze to one character per line. */
+      ul.clean li {
+        position: relative;
+        padding-left: 33px;
+      }
+      ul.clean li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--cyan);
+        background: rgba(34, 230, 247, 0.14);
+      }
+
+      code {
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.92em;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--edge);
+        border-radius: 7px;
+        padding: 2px 7px;
+        /* break only when a line really cannot fit, so phone numbers stay whole */
+        overflow-wrap: anywhere;
+      }
+
+      /* ---------- steps ---------- */
+      .step {
+        margin-top: 18px;
+        overflow: hidden;
+      }
+      .step-head {
+        display: flex;
+        gap: 15px;
+        align-items: flex-start;
+        padding: 24px 24px 0;
+      }
+      @media (min-width: 640px) {
+        .step-head {
+          padding: 30px 34px 0;
+        }
+      }
+      .num {
+        flex: none;
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
+        display: grid;
+        place-items: center;
+        font-size: 1.22rem;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(135deg, var(--indigo), var(--purple));
+        box-shadow: 0 10px 26px -10px rgba(139, 60, 246, 0.85);
+      }
+      .step-head h2 {
+        margin-top: 7px;
+      }
+      .step-body {
+        padding: 0 24px 26px;
+      }
+      @media (min-width: 640px) {
+        .step-body {
+          padding: 0 34px 30px;
+        }
+      }
+
+      /* screenshot with marker legend */
+      figure {
+        margin: 18px 0 0;
+      }
+      figure a {
+        position: relative;
+        display: block;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--edge);
+        background: rgba(0, 0, 0, 0.25);
+      }
+      figure a::after {
+        content: "🔍 বড় করে দেখুন";
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #fff;
+        background: rgba(14, 16, 32, 0.82);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      figcaption {
+        margin-top: 10px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .marks {
+        list-style: none;
+        margin: 12px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 9px;
+      }
+      .marks li {
+        display: flex;
+        gap: 11px;
+        align-items: flex-start;
+        margin: 0;
+        font-size: 15px;
+      }
+      .marks b {
+        flex: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 13px;
+        color: #fff;
+        background: var(--purple);
+        margin-top: 2px;
+      }
+
+      /* ---------- callouts ---------- */
+      .note {
+        display: flex;
+        gap: 13px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        margin: 18px 0 0;
+        font-size: 15.5px;
+        line-height: 1.7;
+        border: 1px solid;
+      }
+      .note .ico {
+        flex: none;
+        font-size: 19px;
+        line-height: 1.5;
+      }
+      .note p {
+        margin: 0;
+      }
+      .note.warn {
+        border-color: rgba(252, 211, 77, 0.32);
+        background: rgba(252, 211, 77, 0.09);
+        color: #fdeec4;
+      }
+      .note.warn strong {
+        color: #fff8e4;
+      }
+      .note.info {
+        border-color: rgba(34, 230, 247, 0.28);
+        background: rgba(34, 230, 247, 0.07);
+        color: #cdf3f9;
+      }
+      .note.info strong {
+        color: #fff;
+      }
+
+      /* ---------- faq ---------- */
+      details {
+        margin-top: 11px;
+        padding: 0;
+        overflow: hidden;
+      }
+      summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 17px 20px;
+        font-weight: 700;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        flex: none;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: var(--cyan);
+        transition: transform 0.18s ease;
+      }
+      details[open] summary::after {
+        transform: rotate(45deg);
+      }
+      details .answer {
+        padding: 0 20px 18px;
+        color: var(--muted);
+      }
+
+      /* ---------- footer ---------- */
+      footer {
+        margin: 46px 0 0;
+        padding: 26px 0 44px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        font-size: 14.5px;
+        color: var(--muted);
+      }
+      footer .brand {
+        margin-bottom: 10px;
+      }
+
+      .toc {
+        display: grid;
+        gap: 2px;
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: toc;
+      }
+      .toc a {
+        display: block;
+        padding: 9px 12px;
+        border-radius: 11px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 15.5px;
+      }
+      .toc a:hover {
+        background: var(--glass-strong);
+        color: #fff;
+      }
+      .toc a::before {
+        counter-increment: toc;
+        content: counter(toc, bengali) ". ";
+        color: var(--cyan);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+
+    <header>
+      <div class="wrap">
+        <a class="brand" href="#top"><img src="assets/makezy-mark.png" alt="" />Makezy</a>
+        <a class="top-link" href="#steps">গাইড শুরু</a>
+      </div>
+    </header>
+
+    <main class="wrap" id="top">
+      <div class="hero">
+        <p class="pill"><span></span>ফ্রি গাইড · বাংলা</p>
+        <h1>ElevenLabs Creator প্ল্যান <span class="grad">১ মাস ফ্রি</span> — ধাপে ধাপে</h1>
+        <p class="lede">
+          Hacktoberfest-এর অফার দিয়ে ElevenLabs-এর Creator প্ল্যান এক মাস ফ্রি পাওয়া যায়। কোনো ক্রেডিট কার্ড লাগে না।
+          নিচের প্রতিটা ধাপে স্ক্রিনশট দেওয়া আছে আর ছবিতে মার্ক করা আছে কোথায় চাপ দিতে হবে — দেখে দেখে নিজেই করে ফেলতে পারবেন।
+        </p>
+      </div>
+
+      <section class="glass pad">
+        <p class="eyebrow">শুরুর আগে</p>
+        <h2>কী কী লাগবে</h2>
+        <ul class="clean">
+          <li>একটা ইমেইল, যেটাতে আপনি এখনই লগইন করতে পারেন (Gmail হলে সবচেয়ে সহজ)।</li>
+          <li>আপনার নিজের মোবাইল নম্বর — SMS ভেরিফিকেশনের জন্য।</li>
+          <li>একটা GitHub অ্যাকাউন্ট। না থাকলে সমস্যা নেই, <a href="#step-6">ধাপ ৬</a>-এ খোলা শেখানো আছে।</li>
+          <li>হাতে ১৫–২০ মিনিট সময় আর ভালো ইন্টারনেট।</li>
+        </ul>
+
+        <div class="note warn">
+          <span class="ico" aria-hidden="true">🔒</span>
+          <p>
+            <strong>OTP বা পাসওয়ার্ড কাউকে দেবেন না।</strong> এই পুরো কাজটা আপনি নিজের ফোনে নিজেই করবেন। Makezy সহ কেউই
+            আপনার কাছে OTP, verification code বা পাসওয়ার্ড চাইবে না। কেউ চাইলে বুঝবেন সেটা স্ক্যাম।
+          </p>
+        </div>
+
+        <h3>ধাপগুলো এক নজরে</h3>
+        <ol class="toc">
+          <li><a href="#step-1">Hacktoberfest-এর প্রোমো পেজে যান</a></li>
+          <li><a href="#step-2">MyMLH অ্যাকাউন্ট খুলুন ও ইমেইল ভেরিফাই করুন</a></li>
+          <li><a href="#step-3">ElevenLabs অফারে “Get your code” চাপুন</a></li>
+          <li><a href="#step-4">দুইটা শর্ত দেখে নিন</a></li>
+          <li><a href="#step-5">MyMLH-এ ফোন নম্বর ভেরিফাই করুন</a></li>
+          <li><a href="#step-6">MyMLH-এ GitHub অ্যাকাউন্ট কানেক্ট করুন</a></li>
+          <li><a href="#step-7">কোড নিয়ে ElevenLabs-এ রিডিম করুন</a></li>
+        </ol>
+      </section>
+
+      <div id="steps"></div>
+
+      <!-- ===== STEP 1 ===== -->
+      <section class="glass step" id="step-1">
+        <div class="step-head">
+          <div class="num">১</div>
+          <div><p class="eyebrow">ধাপ ১</p><h2>Hacktoberfest-এর প্রোমো পেজে যান</h2></div>
+        </div>
+        <div class="step-body">
+          <p>
+            ব্রাউজারে গিয়ে এই লিংকটা খুলুন — <code>hacktoberfest.com/my/promos</code>। চাইলে সরাসরি
+            <a href="https://hacktoberfest.com/my/promos" target="_blank" rel="noopener">এখানে চাপ দিন</a>।
+          </p>
+          <p>
+            আপনি লগইন করা না থাকলে পেজটা নিজে থেকেই আপনাকে <strong>MLH</strong>-এর ওয়েবসাইটে নিয়ে যাবে। সেখানে কী করতে
+            হবে সেটা ধাপ ২-এ আছে। লগইন করা থাকলে নিচের ছবির মতো পেজটা দেখতে পাবেন।
+          </p>
+
+          <figure>
+            <a href="assets/step-1-promos.png" target="_blank" rel="noopener">
+              <img src="assets/step-1-promos.png" alt="Hacktoberfest-এর My Promos পেজ, URL আর My Hacktoberfest বাটন মার্ক করা" loading="lazy" />
+            </a>
+            <ul class="marks">
+              <li><b>1</b><span>এখানে ঠিকানাটা লিখুন: <code>hacktoberfest.com/my/promos</code></span></li>
+              <li><b>2</b><span>পরে কখনো হারিয়ে গেলে উপরের <strong>My Hacktoberfest</strong> বাটন থেকেও এই পেজে আসতে পারবেন।</span></li>
+            </ul>
+            <figcaption>ছবি ছোট লাগলে চাপ দিন — আলাদা ট্যাবে বড় হয়ে খুলবে।</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ===== STEP 2 ===== -->
+      <section class="glass step" id="step-2">
+        <div class="step-head">
+          <div class="num">২</div>
+          <div><p class="eyebrow">ধাপ ২</p><h2>MyMLH অ্যাকাউন্ট খুলুন ও ইমেইল ভেরিফাই করুন</h2></div>
+        </div>
+        <div class="step-body">
+          <p>
+            লিংকটা আপনাকে MLH-এর লগইন পেজে নিয়ে যাবে। আগে থেকে অ্যাকাউন্ট না থাকলে <strong>Sign up</strong> বা
+            <strong>Create account</strong>-এ চাপ দিন, তারপর:
+          </p>
+          <ol>
+            <li><strong>Google দিয়ে</strong> সাইন আপ করুন — এটাই সবচেয়ে দ্রুত। অথবা যেকোনো ইমেইল আর একটা নতুন পাসওয়ার্ড দিন।</li>
+            <li>ফর্মে নাম, জন্মতারিখ, দেশ — এসব সাধারণ তথ্য চাইলে পূরণ করুন।</li>
+            <li>MLH আপনার ইমেইলে একটা <strong>confirmation মেইল</strong> পাঠাবে। ইনবক্সে গিয়ে লিংকে চাপ দিয়ে ইমেইলটা ভেরিফাই করুন।</li>
+            <li>মেইল না পেলে <strong>Spam</strong> বা <strong>Promotions</strong> ফোল্ডার দেখুন।</li>
+          </ol>
+
+          <div class="note info">
+            <span class="ico" aria-hidden="true">💡</span>
+            <p>
+              <strong>পাসওয়ার্ডটা মনে রাখুন।</strong> পরের ধাপগুলোতে MyMLH-এ আবার ঢুকতে হবে। Google দিয়ে সাইন আপ করলে এই
+              ঝামেলা নেই।
+            </p>
+          </div>
+
+          <p>ইমেইল ভেরিফাই হয়ে গেলে আবার <code>hacktoberfest.com/my/promos</code> পেজে ফিরে আসুন। এবার কোড আর অফারের তালিকাটা দেখতে পাবেন।</p>
+        </div>
+      </section>
+
+      <!-- ===== STEP 3 ===== -->
+      <section class="glass step" id="step-3">
+        <div class="step-head">
+          <div class="num">৩</div>
+          <div><p class="eyebrow">ধাপ ৩</p><h2>ElevenLabs অফারে “Get your code” চাপুন</h2></div>
+        </div>
+        <div class="step-body">
+          <p>
+            প্রোমো পেজে নিচের দিকে স্ক্রল করলে অনেকগুলো অফার পাবেন। খুঁজে বের করুন
+            <strong>“ElevenLabs – 1 Month Free”</strong> লেখা কার্ডটা, আর ডান পাশের <strong>Get your code</strong>
+            বাটনে চাপ দিন।
+          </p>
+
+          <figure>
+            <a href="assets/step-2-elevenlabs.png" target="_blank" rel="noopener">
+              <img src="assets/step-2-elevenlabs.png" alt="ElevenLabs – 1 Month Free কার্ড, Get your code বাটন ও দুইটা শর্ত মার্ক করা" loading="lazy" />
+            </a>
+            <ul class="marks">
+              <li><b>1</b><span><strong>Get your code</strong> — কোড নেওয়ার বাটন।</span></li>
+              <li><b>2</b><span>শর্ত ১: MyMLH-এ <strong>ফোন নম্বর ভেরিফাই</strong> থাকতে হবে (ধাপ ৫)।</span></li>
+              <li><b>3</b><span>শর্ত ২: MyMLH-এ <strong>GitHub অ্যাকাউন্ট কানেক্ট</strong> থাকতে হবে (ধাপ ৬)।</span></li>
+            </ul>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ===== STEP 4 ===== -->
+      <section class="glass step" id="step-4">
+        <div class="step-head">
+          <div class="num">৪</div>
+          <div><p class="eyebrow">ধাপ ৪</p><h2>দুইটা শর্ত দেখে নিন</h2></div>
+        </div>
+        <div class="step-body">
+          <p>কার্ডের নিচে লাল রঙে দুইটা লাইন লেখা থাকে। দুইটাই পূরণ না হলে কোড পাবেন না:</p>
+          <ul class="clean">
+            <li><strong>Needs a verified phone number on MyMLH</strong> — আপনার মোবাইল নম্বর ভেরিফাই করা নেই।</li>
+            <li><strong>Needs a connected GitHub account on MyMLH</strong> — GitHub অ্যাকাউন্ট কানেক্ট করা নেই।</li>
+          </ul>
+          <p>
+            লাইন দুইটার শেষে <strong>Verify it</strong> আর <strong>Connect it</strong> লেখা লিংক আছে। ওখানে চাপ দিলেই
+            সোজা MyMLH-এর ঠিক জায়গায় চলে যাবেন। পরের দুই ধাপে এই দুইটাই করব।
+          </p>
+
+          <div class="note info">
+            <span class="ico" aria-hidden="true">📋</span>
+            <p>
+              কার্ডে <strong>“All codes have been claimed for now.”</strong> লেখা থাকতে পারে — মানে ওই মুহূর্তে কোড শেষ।
+              তখন ঘাবড়ানোর কিছু নেই: শর্ত দুইটা আগেই পূরণ করে রাখুন, আর নতুন কোড ছাড়লে সাথে সাথে নিতে পারবেন। দিনে কয়েকবার পেজটা দেখুন।
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== STEP 5 ===== -->
+      <section class="glass step" id="step-5">
+        <div class="step-head">
+          <div class="num">৫</div>
+          <div><p class="eyebrow">ধাপ ৫</p><h2>MyMLH-এ ফোন নম্বর ভেরিফাই করুন</h2></div>
+        </div>
+        <div class="step-body">
+          <p>
+            <strong>Verify it</strong> লিংকে চাপ দিলে MyMLH-এর প্রোফাইল পেজ খুলবে। নিচে স্ক্রল করে
+            <strong>Phone</strong> লেখা বক্সটা খুঁজুন, তারপর ডান পাশের <strong>Add new</strong> বাটনে চাপ দিন।
+          </p>
+
+          <figure>
+            <a href="assets/step-3-phone.png" target="_blank" rel="noopener">
+              <img src="assets/step-3-phone.png" alt="MyMLH প্রোফাইলের Phone সেকশন, Add new বাটন মার্ক করা" loading="lazy" />
+            </a>
+            <ul class="marks">
+              <li><b>1</b><span><strong>Add new</strong> — এখানে চাপ দিয়ে নিজের নম্বর যোগ করুন।</span></li>
+            </ul>
+          </figure>
+
+          <h3>নম্বর দেওয়ার নিয়ম</h3>
+          <ol>
+            <li>দেশ হিসেবে <strong>Bangladesh (+880)</strong> বেছে নিন।</li>
+            <li>নিজের নম্বরটা লিখুন। প্রথম শূন্য বাদ দিয়ে লিখবেন — যেমন <code>01712345678</code> হলে <code>+880 1712345678</code>।</li>
+            <li>আপনার ফোনে SMS-এ একটা কোড আসবে। সেই কোডটা MyMLH-এর ঘরে <strong>নিজে</strong> লিখুন।</li>
+            <li>ভেরিফাই হয়ে গেলে Phone বক্সে আপনার নম্বরটা দেখা যাবে।</li>
+          </ol>
+
+          <div class="note warn">
+            <span class="ico" aria-hidden="true">🔒</span>
+            <p>
+              <strong>SMS-এ আসা কোডটা শুধু আপনার।</strong> এটা MyMLH-এর ওয়েবসাইট ছাড়া আর কোথাও লিখবেন না, কাউকে বলবেন না —
+              ফোনে, মেসেজে বা স্ক্রিন শেয়ারেও না।
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== STEP 6 ===== -->
+      <section class="glass step" id="step-6">
+        <div class="step-head">
+          <div class="num">৬</div>
+          <div><p class="eyebrow">ধাপ ৬</p><h2>MyMLH-এ GitHub অ্যাকাউন্ট কানেক্ট করুন</h2></div>
+        </div>
+        <div class="step-body">
+          <p>
+            একই প্রোফাইল পেজে আরেকটু নিচে <strong>Social Media Connections</strong> লেখা বক্স আছে। ডান পাশের
+            <strong>Add new</strong>-এ চাপ দিলে ছোট একটা মেনু নামবে — সেখান থেকে <strong>GitHub</strong> বেছে নিন।
+          </p>
+
+          <figure>
+            <a href="assets/step-4-github-connect.png" target="_blank" rel="noopener">
+              <img src="assets/step-4-github-connect.png" alt="MyMLH-এর Social Media Connections সেকশন, Add new আর GitHub অপশন মার্ক করা" loading="lazy" />
+            </a>
+            <ul class="marks">
+              <li><b>1</b><span><strong>Add new</strong> — মেনুটা খুলবে।</span></li>
+              <li><b>2</b><span><strong>GitHub</strong> বেছে নিন (Discord লাগবে না)।</span></li>
+            </ul>
+          </figure>
+
+          <p>
+            এরপর GitHub-এর একটা পেজ আসবে, সেখানে <strong>Authorize</strong> বা <strong>Continue</strong> বাটনে চাপ দিলেই
+            কানেক্ট হয়ে যাবে। GitHub-এ লগইন করা না থাকলে আগে লগইন চাইবে।
+          </p>
+
+          <h3>GitHub অ্যাকাউন্ট না থাকলে</h3>
+          <p>
+            প্রথমে একটা অ্যাকাউন্ট খুলে নিন — <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>।
+            পুরো কাজটা দুই মিনিটের, আর একদম ফ্রি।
+          </p>
+
+          <figure>
+            <a href="assets/step-5-github-signup.png" target="_blank" rel="noopener">
+              <img src="assets/step-5-github-signup.png" alt="GitHub-এর Sign up পেজ, Continue with Google আর Email ঘর মার্ক করা" loading="lazy" />
+            </a>
+            <ul class="marks">
+              <li><b>1</b><span><strong>Continue with Google</strong> — সবচেয়ে সহজ রাস্তা, আলাদা পাসওয়ার্ড লাগে না।</span></li>
+              <li><b>2</b><span>অথবা <strong>Email</strong> ঘরে নিজের ইমেইল লিখে এগোন।</span></li>
+            </ul>
+            <figcaption>ছবিতে পাসওয়ার্ড আর ইউজারনেমের ঘর দুইটা ইচ্ছে করে ঢেকে রাখা হয়েছে।</figcaption>
+          </figure>
+
+          <ul class="clean">
+            <li><strong>Password:</strong> কমপক্ষে ১৫ অক্ষর, অথবা ৮ অক্ষরের মধ্যে একটা সংখ্যা আর একটা ছোট হাতের অক্ষর রাখতে হবে।</li>
+            <li><strong>Username:</strong> ইংরেজি অক্ষর, সংখ্যা আর <code>-</code> চলে। এখানে ইমেইল লিখবেন না — যেমন <code>jobayer-dev</code>।</li>
+            <li>শেষে ইমেইলে আসা কোড দিয়ে অ্যাকাউন্টটা ভেরিফাই করুন।</li>
+          </ul>
+
+          <p>অ্যাকাউন্ট হয়ে গেলে MyMLH-এ ফিরে গিয়ে উপরের নিয়মে GitHub কানেক্ট করুন।</p>
+        </div>
+      </section>
+
+      <!-- ===== STEP 7 ===== -->
+      <section class="glass step" id="step-7">
+        <div class="step-head">
+          <div class="num">৭</div>
+          <div><p class="eyebrow">ধাপ ৭</p><h2>কোড নিয়ে ElevenLabs-এ রিডিম করুন</h2></div>
+        </div>
+        <div class="step-body">
+          <ol>
+            <li>আবার <code>hacktoberfest.com/my/promos</code> পেজে যান। দরকার হলে পেজটা রিফ্রেশ করুন (<code>F5</code>)।</li>
+            <li>ElevenLabs কার্ডে লাল লেখা দুইটা এখন আর থাকবে না।</li>
+            <li><strong>Get your code</strong>-এ চাপ দিন। কোডটা দেখাবে — কপি করে কোথাও সেভ করে রাখুন।</li>
+            <li><a href="https://elevenlabs.io" target="_blank" rel="noopener">elevenlabs.io</a>-তে অ্যাকাউন্ট খুলুন বা লগইন করুন।</li>
+            <li>সেখানে <strong>Subscription</strong> বা <strong>Billing</strong> পেজে গিয়ে কোডটা বসিয়ে দিন।</li>
+            <li>Creator প্ল্যান চালু হয়েছে কিনা নিজের অ্যাকাউন্টে দেখে নিন।</li>
+          </ol>
+
+          <div class="note info">
+            <span class="ico" aria-hidden="true">ℹ️</span>
+            <p>
+              একটা অ্যাকাউন্টে একটাই কোড চলে, আর কোডগুলো একটার সাথে আরেকটা যোগ হয় না। ক্রেডিট কার্ড লাগে না। অফারের শর্ত
+              ElevenLabs আর MLH ঠিক করে, তারা যেকোনো সময় বদলাতে পারে।
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FAQ ===== -->
+      <section id="faq">
+        <div class="glass pad" style="padding-bottom: 14px">
+          <p class="eyebrow">প্রশ্ন ও উত্তর</p>
+          <h2>আটকে গেলে</h2>
+
+          <details class="glass">
+            <summary>“All codes have been claimed” দেখাচ্ছে, কী করব?</summary>
+            <div class="answer">
+              ওই মুহূর্তে কোড শেষ। শর্ত দুইটা (ফোন + GitHub) আগেই পূরণ করে রাখুন, তাহলে নতুন কোড ছাড়লে সাথে সাথে নিতে পারবেন।
+              দিনে কয়েকবার পেজটা রিফ্রেশ করে দেখুন।
+            </div>
+          </details>
+
+          <details class="glass">
+            <summary>লাল লেখা দুইটা এখনো যাচ্ছে না।</summary>
+            <div class="answer">
+              পেজটা রিফ্রেশ করুন। তারপরও থাকলে MyMLH-এর প্রোফাইলে গিয়ে দেখুন নম্বরটা সত্যিই ভেরিফাই হয়েছে কিনা আর GitHub
+              কানেক্ট দেখাচ্ছে কিনা। দুইটা ঠিকমতো হওয়ার পর এক-দুই মিনিট সময় লাগতে পারে।
+            </div>
+          </details>
+
+          <details class="glass">
+            <summary>SMS কোড আসছে না।</summary>
+            <div class="answer">
+              নম্বরটা <code>+880</code> দিয়ে ঠিকভাবে লিখেছেন কিনা দেখুন (শুরুর শূন্য বাদ)। নেটওয়ার্কের কারণে দেরি হতে পারে,
+              কয়েক মিনিট পরে আবার <strong>Resend</strong> চাপুন। বারবার না হলে অন্য একটা অপারেটরের নম্বর দিয়ে দেখুন।
+            </div>
+          </details>
+
+          <details class="glass">
+            <summary>GitHub কানেক্ট করলে কি আমার কোড বা রিপো ওরা দেখতে পাবে?</summary>
+            <div class="answer">
+              MyMLH শুধু আপনার পাবলিক প্রোফাইলের তথ্যটুকু নেয় — কে আপনি, সেটা মেলানোর জন্য। Authorize করার আগে GitHub নিজেই
+              কী কী অনুমতি চাওয়া হচ্ছে স্ক্রিনে দেখিয়ে দেয়, পড়ে নিতে পারেন। পরে চাইলে GitHub-এর
+              <strong>Settings → Applications</strong> থেকে অনুমতিটা তুলে নিতে পারবেন।
+            </div>
+          </details>
+
+          <details class="glass">
+            <summary>একাধিক অ্যাকাউন্ট খুলে কয়েকটা কোড নেওয়া যাবে?</summary>
+            <div class="answer">
+              না। প্রতি ব্যক্তি একটা কোড, আর এক অ্যাকাউন্টে একটাই কোড চলে। একাধিক ভুয়া অ্যাকাউন্ট খুললে অ্যাকাউন্ট বন্ধ হয়ে
+              যেতে পারে।
+            </div>
+          </details>
+
+          <details class="glass">
+            <summary>কেউ আমার হয়ে কাজটা করে দিতে চাইলে?</summary>
+            <div class="answer">
+              অ্যাকাউন্ট আর ভেরিফিকেশনটা নিজের ফোনে নিজেই করুন। কেউ সাহায্য করলেও OTP, পাসওয়ার্ড বা verification code তাকে
+              দেবেন না — এগুলো দিয়ে আপনার অ্যাকাউন্টের দখল নিয়ে নেওয়া যায়।
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="glass pad">
+        <p class="eyebrow">শেষ কথা</p>
+        <h2>ব্যস, হয়ে গেল</h2>
+        <p>
+          এই গাইডটা যে কেউ ফ্রিতে পড়তে ও শেয়ার করতে পারে। কাজে লাগলে বন্ধুদের লিংকটা পাঠিয়ে দিন — তারাও নিজেরাই করে
+          ফেলতে পারবে।
+        </p>
+        <div class="note info">
+          <span class="ico" aria-hidden="true">🗓️</span>
+          <p>
+            অফারটা Hacktoberfest-এর, সময়ের সাথে শর্ত বা কোডের সংখ্যা বদলাতে পারে। স্ক্রিনশটগুলো ২০২৬ সালের অক্টোবরের।
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <a class="brand" href="#top"><img src="assets/makezy-mark.png" alt="" />Makezy</a>
+        <p>
+          Makezy একটা স্বাধীন টেক পেজ। Hacktoberfest, MLH, GitHub ও ElevenLabs তাদের নিজ নিজ মালিকের ট্রেডমার্ক — আমরা
+          তাদের সাথে যুক্ত নই, কোনো অফিশিয়াল পার্টনারও নই। অফার ও শর্ত তারাই ঠিক করে।
+        </p>
+        <p>২০২৬ · সবার জন্য উন্মুক্ত</p>
+      </footer>
+    </main>
+  </body>
+</html>
